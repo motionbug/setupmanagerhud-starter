@@ -4,7 +4,7 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "sync": "setupmanagerhud-sync",
+    "sync": "mkdir -p public migrations && cp -r node_modules/@motionbug/setupmanagerhud-core/dist/. public/ && cp -r node_modules/@motionbug/setupmanagerhud-core/migrations/. migrations/",
     "build": "npm run sync",
     "deploy": "wrangler d1 migrations apply DB --remote && wrangler deploy",
     "dev": "wrangler dev",
