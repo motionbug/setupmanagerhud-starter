@@ -16,6 +16,14 @@ openssl rand -hex 24
 
 Save this token - you'll need it for Cloudflare and Setup Manager.
 
+When the Deploy Button opens Cloudflare, paste this value into the required
+`WEBHOOK_TOKEN` secret field. This is the shared token that Setup Manager must
+send with every webhook request.
+
+The template includes `.dev.vars.example` so Cloudflare's Deploy Button shows
+`WEBHOOK_TOKEN` during setup. `wrangler.toml` also declares this as a required
+secret, so manual deploys fail clearly if the token has not been configured.
+
 ### After Deployment
 
 1. Open your Worker URL: `https://setupmanagerhud.<subdomain>.workers.dev`

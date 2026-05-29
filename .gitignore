@@ -3,3 +3,4 @@ public/
 migrations/
 .wrangler/
 .dev.vars
+AGENTS.md

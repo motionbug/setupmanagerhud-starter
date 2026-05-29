@@ -27,7 +27,7 @@
         "description": "D1 database used to store Setup Manager webhook events, dashboard history, stats, and filters."
       },
       "WEBHOOK_TOKEN": {
-        "description": "Required shared secret for Setup Manager webhook POSTs. Enter a long random value, save it securely, and configure the exact same value in Setup Manager. Do not leave blank."
+        "description": "Required shared secret for Setup Manager webhook POSTs. Generate it with `openssl rand -hex 24`, paste it here, save it securely, and configure the exact same value in Setup Manager. Do not leave blank."
       }
     }
   }

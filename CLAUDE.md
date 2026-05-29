@@ -20,6 +20,24 @@ Set the webhook token secret:
 npx wrangler secret put WEBHOOK_TOKEN
 ```
 
+## Critical Deploy Button Requirement
+
+`WEBHOOK_TOKEN` is required for every usable deployment. The Cloudflare Deploy
+Button must show an interface that asks the user for this secret during setup.
+
+Do not remove `.dev.vars.example`: Cloudflare uses this file to discover Worker
+secrets for the Deploy Button flow. Keep `WEBHOOK_TOKEN=` in that file so users
+are prompted to paste their own generated token rather than inheriting a shared
+placeholder.
+
+Do not remove the `[secrets] required = ["WEBHOOK_TOKEN"]` declaration from
+`wrangler.toml`. It makes manual deploys fail clearly when the token has not
+been configured.
+
+The same generated token must be saved by the user and configured in Setup
+Manager. Cloudflare Access is optional dashboard protection; it does not replace
+the required webhook token.
+
 ## Architecture
 
 This is a thin deployment wrapper around `@motionbug/setupmanagerhud-core`:
@@ -32,7 +50,7 @@ This is a thin deployment wrapper around `@motionbug/setupmanagerhud-core`:
 
 - `DB` - D1 database for event persistence
 - `DASHBOARD_ROOM` - Durable Object for real-time WebSocket connections
-- `WEBHOOK_TOKEN` - Secret for webhook authentication
+- `WEBHOOK_TOKEN` - Required shared secret for webhook authentication; must be exposed in the Deploy Button setup via `.dev.vars.example`
 - Optional: `CF_ACCESS_AUD` and `CF_ACCESS_TEAM_DOMAIN` for Cloudflare Access protection
 
 ### Customization
