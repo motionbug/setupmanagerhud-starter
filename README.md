@@ -4,7 +4,7 @@ Real-time webhook dashboard for [Setup Manager](https://github.com/jamf/setup-ma
 
 ## Quick Start
 
-[![Deploy to Cloudflare Workers](https://deploy.workers.cloudflare.com/button)](https://deploy.workers.cloudflare.com/?url=https://github.com/motionbug/setupmanagerhud-starter)
+[![Deploy to Cloudflare Workers](https://deploy.workers.cloudflare.com/button)](https://deploy.workers.cloudflare.com/?url=https://github.com/motionbug/setupmanagerhud-starter&fields=%7B%22name%22:%22Webhook%20Token%22,%22secret%22:%22WEBHOOK_TOKEN%22,%22descr%22:%22Generate%20with:%20openssl%20rand%20-hex%2024%22%7D)
 
 ### Before You Deploy
 
