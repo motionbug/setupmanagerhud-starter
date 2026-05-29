@@ -1,0 +1,5 @@
+{
+  "$schema": "https://workers.cloudflare.com/schemas/deploy.json",
+  "name": "setupmanagerhud",
+  "secrets": ["WEBHOOK_TOKEN"]
+}
