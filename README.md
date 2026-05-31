@@ -32,14 +32,9 @@ secret, so manual deploys fail clearly if the token has not been configured.
 
 ## Upgrading
 
-When a new version of Setup Manager HUD is released:
-
-```bash
-npm run upgrade
-npm run deploy
-```
-
-This updates the core package, syncs new assets/migrations, and redeploys.
+When the dashboard shows that an update is available, update the Git repository
+created for your deployment and push the change so Cloudflare rebuilds it. See
+[Upgrading Setup Manager HUD](UPGRADE.md) for the step-by-step guide.
 
 ## Local Development
 
