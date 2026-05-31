@@ -27,14 +27,15 @@ secret, so manual deploys fail clearly if the token has not been configured.
 ### After Deployment
 
 1. Open your Worker URL: `https://setupmanagerhud.<subdomain>.workers.dev`
-2. Configure Setup Manager with your webhook URL and token
-3. (Optional) Set up Cloudflare Access for dashboard protection
+2. Check health: `https://setupmanagerhud.<subdomain>.workers.dev/api/health`
+3. Configure Setup Manager with your webhook URL and token
+4. (Optional) Set up Cloudflare Access for dashboard protection
 
 ## Upgrading
 
 When the dashboard shows that an update is available, update the Git repository
 created for your deployment and push the change so Cloudflare rebuilds it. See
-[Upgrading Setup Manager HUD](UPGRADE.md) for the step-by-step guide.
+[Upgrading Setup Manager HUD](docs/upgrading.md) for the step-by-step guide.
 
 ## Local Development
 
@@ -46,9 +47,11 @@ npm run dev
 
 ## Documentation
 
-- [Configuration](https://github.com/motionbug/setupmanagerHUD-npm/blob/main/docs/Configuration.md)
-- [Security](https://github.com/motionbug/setupmanagerHUD-npm/blob/main/docs/Security.md)
-- [Troubleshooting](https://github.com/motionbug/setupmanagerHUD-npm/blob/main/docs/Troubleshooting.md)
+- [Docs index](docs/README.md)
+- [Configuration](docs/configuration.md)
+- [Security](docs/security.md)
+- [Troubleshooting](docs/troubleshooting.md)
+- [Upgrading](docs/upgrading.md)
 
 ## License
 
