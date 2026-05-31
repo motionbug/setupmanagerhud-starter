@@ -121,6 +121,52 @@ curl -X POST https://YOUR-WORKER.YOUR-SUBDOMAIN.workers.dev/webhook \
 
 Refresh the dashboard and confirm the test event appears.
 
+For a larger demo dataset, use the included CSV-based test sender:
+
+```bash
+WORKER_URL=https://YOUR-WORKER.YOUR-SUBDOMAIN.workers.dev \
+WEBHOOK_TOKEN=your-token-here \
+scripts/send-test-events.sh
+```
+
+Edit [examples/test-devices.csv](../examples/test-devices.csv) for computers.
+It includes sample Mac serials, macOS versions, hardware models, and computer
+names.
+
+Edit [examples/test-applications.csv](../examples/test-applications.csv) for
+application names. The default list is:
+
+```csv
+name
+Microsoft Outlook
+Google Chrome
+Microsoft Teams
+Zoom
+SAP Privileges
+Jamf Trust
+Jamf Protect
+```
+
+The script sends started and finished events across the last 7 days. By
+default, failed enrollments fail `Microsoft Outlook` only when network
+throughput is slow. To change the failed app, set `FAILED_APPLICATION`:
+
+```bash
+FAILED_APPLICATION="Zoom" \
+WORKER_URL=https://YOUR-WORKER.YOUR-SUBDOMAIN.workers.dev \
+WEBHOOK_TOKEN=your-token-here \
+scripts/send-test-events.sh
+```
+
+To check the count without sending events:
+
+```bash
+DRY_RUN=1 \
+WORKER_URL=https://YOUR-WORKER.YOUR-SUBDOMAIN.workers.dev \
+WEBHOOK_TOKEN=your-token-here \
+scripts/send-test-events.sh
+```
+
 ## 7. Optional: Protect Dashboard Viewing
 
 The dashboard can be public or protected with Cloudflare Access.

@@ -361,6 +361,35 @@ See [Security - Cloudflare Access](security.md#cloudflare-access-optional-dashbo
 
 ---
 
+### Need sample data for testing
+
+Use the CSV-based test sender from the repository root:
+
+```bash
+WORKER_URL=https://YOUR-WORKER.YOUR-SUBDOMAIN.workers.dev \
+WEBHOOK_TOKEN=your-token-here \
+scripts/send-test-events.sh
+```
+
+The sample device CSV is [examples/test-devices.csv](../examples/test-devices.csv).
+You can edit serial numbers, macOS versions, hardware models, and computer
+names before running the script.
+
+The sample application CSV is
+[examples/test-applications.csv](../examples/test-applications.csv). Edit it to
+change the application names used as enrollment actions.
+
+To validate the CSV files and event count without posting data:
+
+```bash
+DRY_RUN=1 \
+WORKER_URL=https://YOUR-WORKER.YOUR-SUBDOMAIN.workers.dev \
+WEBHOOK_TOKEN=your-token-here \
+scripts/send-test-events.sh
+```
+
+---
+
 ### Need more help?
 
 - Check the [GitHub Issues](https://github.com/motionbug/setupmanagerhud-starter/issues) for similar problems
