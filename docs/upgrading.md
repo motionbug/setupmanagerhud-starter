@@ -75,6 +75,65 @@ You may see something like:
 
 That means the live Worker is running `1.2.1`, and `1.2.2` is available.
 
+## Back Up Your D1 Database
+
+Before upgrading, export a backup of the remote D1 database that stores your
+dashboard history. This gives you a copy of your setup events before package
+updates or database migrations run.
+
+The default starter database name is `setupmanagerhud-events`, but your
+database may have a different name.
+
+Check the database name in `wrangler.toml`:
+
+```bash
+grep -A5 '\[\[d1_databases\]\]' wrangler.toml
+```
+
+Look for this line:
+
+```toml
+database_name = "setupmanagerhud-events"
+```
+
+You can also find the database name in Cloudflare:
+
+1. Open `dash.cloudflare.com`
+2. Select your account
+3. Go to **Workers & Pages**
+4. Go to **D1 SQL Database**
+5. Find the database used by this dashboard
+
+The Worker binding is usually named `DB`, but the backup command needs the D1
+database name, not the binding name.
+
+Create a backup folder and export the remote database:
+
+```bash
+mkdir -p backups
+
+npx wrangler d1 export YOUR_DATABASE_NAME \
+  --remote \
+  --output backups/YOUR_DATABASE_NAME-$(date +%Y%m%d-%H%M%S).sql
+```
+
+For the default starter database name, that command is:
+
+```bash
+npx wrangler d1 export setupmanagerhud-events \
+  --remote \
+  --output backups/setupmanagerhud-events-$(date +%Y%m%d-%H%M%S).sql
+```
+
+Confirm the backup file was created:
+
+```bash
+ls -lh backups
+```
+
+Do not commit database backups. They may contain device history, serial
+numbers, user names, or other setup details.
+
 ## Upgrade the Repository
 
 From inside your dashboard repository:
