@@ -58,14 +58,14 @@ Add the `token` key to **each** webhook in your Setup Manager configuration plis
   <key>started</key>
   <dict>
     <key>url</key>
-    <string>https://your-worker.workers.dev/webhook</string>
+    <string>https://YOUR-WORKER.YOUR-SUBDOMAIN.workers.dev/webhook</string>
     <key>token</key>
     <string>paste-your-secret-here</string>
   </dict>
   <key>finished</key>
   <dict>
     <key>url</key>
-    <string>https://your-worker.workers.dev/webhook</string>
+    <string>https://YOUR-WORKER.YOUR-SUBDOMAIN.workers.dev/webhook</string>
     <key>token</key>
     <string>paste-your-secret-here</string>
   </dict>
@@ -81,7 +81,7 @@ Add the `token` key to **each** webhook in your Setup Manager configuration plis
 Test your configuration with curl:
 
 ```bash
-curl -X POST https://your-worker.workers.dev/webhook \
+curl -X POST https://YOUR-WORKER.YOUR-SUBDOMAIN.workers.dev/webhook \
   -H "Authorization: Bearer your-token-here" \
   -H "Content-Type: application/json" \
   -d '{"name":"Test","event":"com.jamf.setupmanager.started","timestamp":"2025-01-01T00:00:00Z","started":"2025-01-01T00:00:00Z","modelName":"Test Mac","modelIdentifier":"Mac15,3","macOSBuild":"24A335","macOSVersion":"15.0","serialNumber":"TEST001","setupManagerVersion":"2.0.0"}'
@@ -115,7 +115,7 @@ Device -> POST /webhook (bypasses Access) -> Worker -> D1
    - If your provider already appears under **Your identity providers**, you can use the existing provider.
 3. **Create application:** Go to **Zero Trust -> Access -> Applications -> Add an application -> Self-hosted**
    - Name: `Setup Manager HUD`
-   - Domain: `your-worker.workers.dev`
+   - Domain: `YOUR-WORKER.YOUR-SUBDOMAIN.workers.dev`
 4. **Create Allow policy:** Include your email address or domain
 5. **Create Bypass policy for webhook:**
    - Policy name: `Bypass webhook`

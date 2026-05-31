@@ -7,11 +7,13 @@ Deploy Button or maintaining a deployed dashboard repository.
 |-----------|------------|
 | ![Dark Mode](assets/setupmanagerhud-dark.png) | ![Light Mode](assets/setupmanagerhud-light.png) |
 
-| Page | Use it for |
+| Task | Start here |
 |------|------------|
-| [Configuration](configuration.md) | D1, Worker bindings, environment variables, and health checks |
-| [Security](security.md) | Required `WEBHOOK_TOKEN`, optional Cloudflare Access, and rate limiting |
-| [Troubleshooting](troubleshooting.md) | Webhook, D1, Durable Object, WebSocket, and Access issues |
-| [Upgrading](upgrading.md) | Updating a deployed dashboard when a new version is available |
+| New deployment | [Getting Started](getting-started.md) |
+| Configure storage, secrets, or Worker bindings | [Configuration](configuration.md) |
+| Configure Setup Manager, webhook tokens, or dashboard protection | [Security](security.md) |
+| Upgrade an existing dashboard | [Upgrading](upgrading.md) |
+| Fix webhook, D1, Durable Object, WebSocket, or Access errors | [Troubleshooting](troubleshooting.md) |
 
-For the fastest setup path, start with the main [README](../README.md).
+For the fastest setup path, start with the main [README](../README.md), then
+continue with [Getting Started](getting-started.md).

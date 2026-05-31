@@ -1,6 +1,8 @@
 # Configuration
 
-This page covers all configuration options for Setup Manager HUD. Follow these steps in order for a new deployment, or jump to a specific section for reference.
+This page covers storage, secrets, Worker bindings, and health checks for Setup
+Manager HUD. For a first-time Deploy Button setup, start with
+[Getting Started](getting-started.md).
 
 ---
 
@@ -10,7 +12,8 @@ Setup Manager HUD stores webhook events in [Cloudflare D1](https://developers.cl
 
 ### Option A: Deploy Button
 
-When using the **Deploy to Cloudflare** button from the main README, Cloudflare reads `wrangler.toml` and can provision the D1 binding declared there:
+Most Deploy Button users should not manually create a D1 database. Cloudflare
+reads `wrangler.toml` and can provision the D1 binding declared there:
 
 ```toml
 [[d1_databases]]
@@ -27,9 +30,14 @@ npx wrangler d1 migrations apply DB --remote
 
 During Deploy Button setup, Cloudflare may ask for `WEBHOOK_TOKEN`. Enter a long random value, save it somewhere secure, and use that exact same value in Setup Manager. Do not leave it blank. After deployment, verify the Worker has a D1 binding named `DB` and that `WEBHOOK_TOKEN` is set before sending real Setup Manager webhooks.
 
+Only use the manual D1 steps below if your health check shows D1 as missing,
+not configured, or in error.
+
 ### Option B: Cloudflare Dashboard
 
-No CLI needed - everything in the browser.
+Use this when you need to create or rebind D1 in the Cloudflare dashboard. You
+can create and bind the database in the browser, but migrations still require a
+local clone with Wrangler.
 
 **1. Create the database:**
 
@@ -188,6 +196,10 @@ database_id = "setupmanagerhud-events"
 
 Deploy Button installs can use the placeholder-style `database_id` above during Cloudflare provisioning. Manual CLI/GitHub deploys should replace `database_id` with the D1 UUID from `npx wrangler d1 create setupmanagerhud-events`.
 
+`binding = "DB"` is the Worker variable name used by the code. Keep it exactly
+`DB`. `database_name` is the Cloudflare D1 database name, and admins sometimes
+change it during setup.
+
 ### Durable Object Binding
 
 ```toml
@@ -228,7 +240,7 @@ CF_ACCESS_TEAM_DOMAIN = "your-team.cloudflareaccess.com"
 Verify your configuration via the health endpoint:
 
 ```bash
-curl https://your-worker.workers.dev/api/health
+curl https://YOUR-WORKER.YOUR-SUBDOMAIN.workers.dev/api/health
 ```
 
 Response:
@@ -255,7 +267,7 @@ If any field shows a problem value, see [Troubleshooting](troubleshooting.md).
 
 ---
 
-## API Event Filters
+## Advanced: API Event Filters
 
 `GET /api/events` returns an array of stored events. The endpoint supports server-side filtering for larger deployments.
 
@@ -274,5 +286,5 @@ If any field shows a problem value, see [Troubleshooting](troubleshooting.md).
 Example:
 
 ```bash
-curl "https://your-worker.workers.dev/api/events?eventType=failed&timeRange=week&limit=50"
+curl "https://YOUR-WORKER.YOUR-SUBDOMAIN.workers.dev/api/events?eventType=failed&timeRange=week&limit=50"
 ```

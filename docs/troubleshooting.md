@@ -2,6 +2,12 @@
 
 Common issues and their solutions. Each section follows the format: Problem, Cause, Solution.
 
+Examples use this placeholder dashboard URL:
+
+```text
+https://YOUR-WORKER.YOUR-SUBDOMAIN.workers.dev
+```
+
 ---
 
 ## Webhook Issues
@@ -31,7 +37,7 @@ Common issues and their solutions. Each section follows the format: Problem, Cau
 
 5. Test manually:
    ```bash
-   curl -X POST https://your-worker.workers.dev/webhook \
+   curl -X POST https://YOUR-WORKER.YOUR-SUBDOMAIN.workers.dev/webhook \
      -H "Authorization: Bearer your-token-here" \
      -H "Content-Type: application/json" \
      -d '{"name":"Test","event":"com.jamf.setupmanager.started","timestamp":"2025-01-01T00:00:00Z","started":"2025-01-01T00:00:00Z","modelName":"Test Mac","modelIdentifier":"Mac15,3","macOSBuild":"24A335","macOSVersion":"15.0","serialNumber":"TEST001","setupManagerVersion":"2.0.0"}'
@@ -62,7 +68,7 @@ See [Security](security.md) for complete webhook token setup.
 
 Test:
 ```bash
-curl -X POST https://your-worker.workers.dev/webhook \
+curl -X POST https://YOUR-WORKER.YOUR-SUBDOMAIN.workers.dev/webhook \
   -H "Authorization: Bearer your-token-here" \
   -H "Content-Type: application/json" \
   -d '{"name":"Test","event":"com.jamf.setupmanager.started",...}'
@@ -81,7 +87,7 @@ curl -X POST https://your-worker.workers.dev/webhook \
 
 1. Check health endpoint:
    ```bash
-   curl https://your-worker.workers.dev/api/health
+   curl https://YOUR-WORKER.YOUR-SUBDOMAIN.workers.dev/api/health
    ```
 
 2. If `d1` shows `not configured` or `error`:
@@ -104,7 +110,9 @@ See [Configuration - D1 Database](configuration.md#d1-database-required) for set
 
 **Solution:**
 
-1. Check browser console for WebSocket errors (F12 -> Console)
+1. Check the browser console for WebSocket errors:
+   - Chrome: **View -> Developer -> JavaScript Console**
+   - Safari: enable the Develop menu, then open **Develop -> Show JavaScript Console**
 
 2. If using Cloudflare Access, verify the Access cookie is valid:
    - Open dashboard in browser (should prompt for login)
@@ -118,7 +126,7 @@ See [Configuration - D1 Database](configuration.md#d1-database-required) for set
      -H "Upgrade: websocket" \
      -H "Sec-WebSocket-Version: 13" \
      -H "Sec-WebSocket-Key: dGhlIHNhbXBsZSBub25jZQ==" \
-     https://your-worker.workers.dev/ws
+     https://YOUR-WORKER.YOUR-SUBDOMAIN.workers.dev/ws
    # Should return 101 Switching Protocols
    ```
 
@@ -134,7 +142,7 @@ See [Configuration - D1 Database](configuration.md#d1-database-required) for set
 
 **Solution:**
 
-1. Open browser console (F12) and look for JavaScript errors
+1. Open the browser JavaScript console and look for errors
 2. Hard refresh: Ctrl+Shift+R (Windows/Linux) or Cmd+Shift+R (Mac)
 3. Clear browser cache and local storage for the domain
 4. Try a different browser to isolate browser-specific issues
@@ -207,7 +215,7 @@ See [Configuration - D1 Database](configuration.md#d1-database-required) for set
 
 1. Open the health endpoint after authenticating through Cloudflare Access:
    ```bash
-   curl https://your-worker.workers.dev/api/health
+   curl https://YOUR-WORKER.YOUR-SUBDOMAIN.workers.dev/api/health
    ```
 
 2. Verify `"d1": "connected"`.
@@ -217,6 +225,49 @@ See [Configuration - D1 Database](configuration.md#d1-database-required) for set
 4. If D1 is degraded, recheck the `DB` binding and apply migrations with `--remote`.
 
 5. If Durable Objects are degraded, verify the `DASHBOARD_ROOM` binding and migration in `wrangler.toml`.
+
+---
+
+### Storage warning says D1 is connected and Durable Objects are error
+
+**Problem:** The dashboard says D1 is connected, but Durable Objects are in error.
+
+**Cause:** The D1 database is working, but the Worker cannot create or reach the
+`DASHBOARD_ROOM` Durable Object. This usually means the Durable Object binding
+or migration is missing from the deployed Worker configuration.
+
+**Solution:**
+
+1. Verify `wrangler.toml` contains both Durable Object sections:
+   ```toml
+   [[durable_objects.bindings]]
+   name = "DASHBOARD_ROOM"
+   class_name = "DashboardRoom"
+
+   [[migrations]]
+   tag = "v1"
+   new_sqlite_classes = ["DashboardRoom"]
+   ```
+
+2. Confirm Cloudflare deployed from the repository and commit you expect.
+
+3. If using Cloudflare Git integration, push a commit and wait for a successful
+   Cloudflare deployment.
+
+4. If using GitHub Actions, remember that this starter validates on push but
+   deploys only when you manually run **Actions -> Deploy to Cloudflare Workers
+   -> Run workflow**.
+
+5. If deploying from your Mac, run:
+   ```bash
+   npm run build
+   npx wrangler deploy
+   ```
+
+6. Recheck health:
+   ```bash
+   curl https://YOUR-WORKER.YOUR-SUBDOMAIN.workers.dev/api/health
+   ```
 
 ---
 
@@ -302,7 +353,7 @@ See [Security - Cloudflare Access](security.md#cloudflare-access-optional-dashbo
 
 5. **Test with curl:** Send a test event and watch the dashboard:
    ```bash
-   curl -X POST https://your-worker.workers.dev/webhook \
+   curl -X POST https://YOUR-WORKER.YOUR-SUBDOMAIN.workers.dev/webhook \
      -H "Authorization: Bearer your-token-here" \
      -H "Content-Type: application/json" \
      -d '{"name":"Started","event":"com.jamf.setupmanager.started","timestamp":"2025-01-01T00:00:00Z","started":"2025-01-01T00:00:00Z","modelName":"Test Mac","modelIdentifier":"Mac15,3","macOSBuild":"24A335","macOSVersion":"15.0","serialNumber":"TEST001","setupManagerVersion":"2.0.0"}'

@@ -8,13 +8,19 @@ itself. It is a Cloudflare Worker built from a Git repository. To upgrade it,
 you update that repository, push the change to GitHub, and Cloudflare builds a
 new Worker from the pushed commit.
 
+There are three possible deployment routes:
+
+- Cloudflare Git integration: push to the connected GitHub repo and Cloudflare deploys.
+- GitHub Actions: push validates, then manually run the deploy workflow.
+- Wrangler: deploy directly from your Mac when Git deployment is not connected.
+
 ## What You Need
 
 - The GitHub repository created for your dashboard deployment
 - Git installed on your Mac
 - Node.js 22 or newer installed on your Mac
 - Access to push changes to that GitHub repository
-- Your Cloudflare build connected to that repository
+- A Cloudflare Git deployment connected to that repository, or Wrangler access for manual deploys
 
 You do not need to change your `WEBHOOK_TOKEN` for a normal upgrade.
 
@@ -132,7 +138,8 @@ ls -lh backups
 ```
 
 Do not commit database backups. They may contain device history, serial
-numbers, user names, or other setup details.
+numbers, user names, or other setup details. Keep the SQL file as a recovery
+copy in case you need to rebuild or restore D1 after a failed upgrade.
 
 ## Upgrade the Repository
 
@@ -175,8 +182,13 @@ git commit -m "Upgrade Setup Manager HUD core"
 git push
 ```
 
-After you push, Cloudflare should automatically build and deploy the new Worker.
-This can take a few minutes.
+If Cloudflare is connected directly to this GitHub repo, it should
+automatically build and deploy the new Worker after you push. This can take a
+few minutes.
+
+If you are using the GitHub Actions workflow included with this starter, a push
+to `main` validates the build but does not deploy. Go to **Actions -> Deploy to
+Cloudflare Workers -> Run workflow** to deploy after the validation passes.
 
 ## Confirm Cloudflare Rebuilt It
 
